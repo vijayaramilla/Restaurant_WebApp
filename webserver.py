@@ -1,11 +1,50 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import cgi
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Restaurant, MenuItem
+
+engine = create_engine('sqlite:///restaurantmenu.db')
+Base.metadata.bind = engine
+
+#Create a sqlalchemy session maker object
+DBSession = sessionmaker(bind= engine)
+#Create Session and add your sql queries to session
+session = DBSession()
+
 #Class to handle all http requests
 class webserverHandler(BaseHTTPRequestHandler):
     #method to handle get request
     def do_GET(self):
         try:
+            if self.path.endswith("/Restaurants"):
+                #create the response
+                #set the response code.
+                self.send_response(200)
+                #send header
+                self.send_header('Content-type','text/html')
+                self.end_headers()
+                
+                #Get the list of restaraunts
+                rest_list = session.query(Restaurant).all()
+                
+                #construct actual output
+                msg = ""
+                msg += "<htlm><body>"
+                for rest in rest_list:
+                    msg += rest.name
+                    msg += "</br>"
+                    msg += "<a href = '/hello' > Edit</a>"
+                    msg +=  "</br>"
+                    msg += "<a href = '/hello' > Delete</a>"
+                    msg +=  "</br>"
+                msg += "</htlm></body>"
+                self.wfile.write(bytes(msg, "utf-8"))
+                print(msg)
+                return
+
+
             if self.path.endswith("/hello"):
                 #create the response
                 #set the response code.
