@@ -25,6 +25,18 @@ myFirstRestaurant = Restaurant(name= "Pizza Hut")
 session.add(myFirstRestaurant)
 session.commit()
 
+seconf_rest = Restaurant(name= "Subway")
+session.add(seconf_rest)
+session.commit()
+
+third = Restaurant(name= "Dominos")
+session.add(third)
+session.commit()
+
+fourth = Restaurant(name= "Wendy's")
+session.add(fourth)
+session.commit()
+
 #check if the entry is added
 print(session.query(Restaurant).all())
 
@@ -35,6 +47,19 @@ cheese_pizza = MenuItem(name ="Cheese pizza",
         price= "$8.99", 
         restaurant=myFirstRestaurant)
 
+pasta = MenuItem(name ="Parmesa Pasta", 
+        description="pasta",
+        course="Entree", 
+        price= "$10", 
+        restaurant=myFirstRestaurant)
+
+bread = MenuItem(name ="Garlic Bread", 
+        description = "Bread",
+        course="Starter", 
+        price= "$5", 
+        restaurant=myFirstRestaurant)
 session.add(cheese_pizza)
+session.add(pasta)
+session.add(bread)
 session.commit()
 print(session.query(MenuItem).all())
